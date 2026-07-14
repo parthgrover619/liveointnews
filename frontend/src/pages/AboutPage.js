@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { CheckCircle, Users, Target, Heart } from 'lucide-react';
+import { CheckCircle, Users, Target, Heart, MapPin, Mail } from 'lucide-react';
 
 const AboutPage = () => {
   const values = [
@@ -124,20 +124,53 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section className="bg-primary text-primary-foreground py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold playfair mb-4">Join Our Mission</h2>
-          <p className="text-lg mb-8">
-            Have a story to share? Want to contribute? Get in touch with us.
-          </p>
-          <a
-            href="/contact"
-            className="inline-block px-8 py-3 bg-white text-primary font-semibold rounded hover:bg-gray-100 transition-colors duration-200"
-            data-testid="contact-cta-button"
-          >
-            Contact Us
-          </a>
+      {/* Contact CTA with Map */}
+      <section className="bg-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl font-bold playfair mb-4">Visit Our Office</h2>
+              <p className="text-lg mb-6 text-muted-foreground">
+                Have a story to share? Want to contribute? Visit us or get in touch.
+              </p>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start space-x-3 lg:justify-start justify-center">
+                  <MapPin size={24} className="text-primary flex-shrink-0" />
+                  <div className="text-left">
+                    <p className="font-semibold">Shop No 14, New Bus Stand</p>
+                    <p className="text-muted-foreground">Theog, Shimla, Himachal Pradesh</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3 lg:justify-start justify-center">
+                  <Mail size={24} className="text-primary flex-shrink-0" />
+                  <div className="text-left">
+                    <a href="mailto:livepointnewstheog@gmail.com" className="text-primary hover:underline">
+                      livepointnewstheog@gmail.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <a
+                href="/contact"
+                className="inline-block px-8 py-3 bg-primary text-primary-foreground font-semibold rounded hover:bg-primary/90 transition-colors duration-200"
+                data-testid="contact-cta-button"
+              >
+                Contact Us
+              </a>
+            </div>
+            <div className="rounded-lg overflow-hidden border-2 border-primary shadow-2xl">
+              <iframe
+                title="Live Point News Office Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3434.892!2d77.3843!3d31.1048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390578e3e8e4e3e3%3A0x1!2sNew%20Bus%20Stand%2C%20Theog%2C%20Shimla%2C%20Himachal%20Pradesh!5e0!3m2!1sen!2sin!4v1234567890"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
         </div>
       </section>
 

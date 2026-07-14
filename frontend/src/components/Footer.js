@@ -5,6 +5,49 @@ import { Mail, MapPin } from 'lucide-react';
 const Footer = () => {
   return (
     <footer className="bg-foreground text-white mt-20">
+      {/* Map Section */}
+      <div className="border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h3 className="text-2xl font-bold playfair mb-6 text-center">Visit Our Office</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <MapPin size={24} className="text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h4 className="font-bold text-lg mb-2">Live Point News Office</h4>
+                  <p className="text-gray-300 leading-relaxed">
+                    Shop No 14, New Bus Stand<br />
+                    Theog, Shimla<br />
+                    Himachal Pradesh, India
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3">
+                <Mail size={24} className="text-primary flex-shrink-0 mt-1" />
+                <div>
+                  <h4 className="font-bold text-lg mb-2">Email Us</h4>
+                  <a href="mailto:livepointnewstheog@gmail.com" className="text-gray-300 hover:text-primary transition-colors duration-200">
+                    livepointnewstheog@gmail.com
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-lg overflow-hidden border-2 border-primary shadow-2xl">
+              <iframe
+                title="Live Point News Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3434.892!2d77.3843!3d31.1048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390578e3e8e4e3e3%3A0x1!2sNew%20Bus%20Stand%2C%20Theog%2C%20Shimla%2C%20Himachal%20Pradesh!5e0!3m2!1sen!2sin!4v1234567890"
+                width="100%"
+                height="300"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}

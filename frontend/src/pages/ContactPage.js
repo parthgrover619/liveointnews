@@ -88,17 +88,27 @@ const ContactPage = () => {
               </div>
             </div>
 
-            {/* Map */}
-            <div className="mt-8 rounded overflow-hidden border border-border">
-              <iframe
-                title="Live Point News Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54624.89697937634!2d77.38429!3d31.1048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390578e3e8e4e3e3%3A0x1!2sTheog%2C%20Himachal%20Pradesh!5e0!3m2!1sen!2sin!4v1234567890"
-                width="100%"
-                height="300"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-              ></iframe>
+            {/* Enhanced Map Section */}
+            <div className="mt-8">
+              <h3 className="text-xl font-bold playfair mb-4">Find Us on Map</h3>
+              <div className="rounded-lg overflow-hidden border-2 border-primary shadow-2xl">
+                <iframe
+                  title="Live Point News Location - Shop No 14, New Bus Stand, Theog"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3434.892!2d77.3843!3d31.1048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390578e3e8e4e3e3%3A0x1!2sNew%20Bus%20Stand%2C%20Theog%2C%20Shimla%2C%20Himachal%20Pradesh!5e0!3m2!1sen!2sin!4v1234567890"
+                  width="100%"
+                  height="400"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+              <div className="mt-4 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
+                <p className="text-sm font-semibold text-foreground flex items-center space-x-2">
+                  <MapPin size={16} className="text-primary" />
+                  <span>Shop No 14, New Bus Stand, Theog, Shimla, Himachal Pradesh</span>
+                </p>
+              </div>
             </div>
           </div>
 

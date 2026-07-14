@@ -1,0 +1,137 @@
+{
+  "theme": "light",
+  "typography": {
+    "fonts": {
+      "headings": "'Playfair Display', serif",
+      "body": "'IBM Plex Sans', sans-serif",
+      "labels": "'Inter', sans-serif"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-none font-black",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-tight font-bold",
+      "h3": "text-xl sm:text-2xl font-semibold leading-snug",
+      "h4": "text-lg sm:text-xl font-semibold leading-snug",
+      "body": "text-base leading-relaxed",
+      "small": "text-sm text-muted-foreground",
+      "overline": "text-xs uppercase tracking-[0.2em] font-semibold text-primary"
+    },
+    "rules": [
+      "No generic sans-serif (Inter, Roboto) for headings.",
+      "Headlines > 32px MUST use tracking-tight.",
+      "Overlines/Labels MUST be Uppercase + Tiny + Wide Spacing."
+    ]
+  },
+  "colors": {
+    "palette": {
+      "primary": { "DEFAULT": "#C8102E", "foreground": "#FFFFFF" },
+      "secondary": { "DEFAULT": "#1E5AA8", "foreground": "#FFFFFF" },
+      "accent": { "DEFAULT": "#F2B705", "foreground": "#1A1A1A" },
+      "background": { "DEFAULT": "#F7F7F8" },
+      "foreground": { "DEFAULT": "#1A1A1A" },
+      "muted": { "DEFAULT": "#E5E5E5", "foreground": "#595959" },
+      "border": { "DEFAULT": "#E0E0E0" }
+    },
+    "archetype": "ARCHETYPE 4: SWISS & HIGH-CONTRAST (Authority, Clarity, Truth) adapted for modern editorial.",
+    "rules": [
+      "Use #F7F7F8 (Off-white) for background to reduce eye strain for reading.",
+      "Deep Red (#C8102E) reserved for breaking news, critical alerts, and primary CTAs.",
+      "Charcoal (#1A1A1A) for primary text to avoid harsh pure black.",
+      "Never use pure #000000 or #808080."
+    ]
+  },
+  "surface_strategies": {
+    "header": "Crystal Glassmorphism: backdrop-blur-xl bg-white/80 with 1px border-white/40 and shadow-sm. NEVER use fully transparent backgrounds.",
+    "cards": "Bento Grid style: Flat background (bg-white), 1px subtle border (border-border), no default shadow. On hover: slight lift (-translate-y-1) and shadow-lg.",
+    "dashboard": "Technical Look: border-collapse style layout, subtle borders on right and bottom of grid items."
+  },
+  "layouts": {
+    "general": [
+      "Mobile-First Responsive.",
+      "Optical alignment over geometrical alignment.",
+      "Generous spacing: Use p-6, p-8, p-12 extensively."
+    ],
+    "marketing_editorial": "Bento grids, asymmetric blocks for home page. Anti-grid flowing layouts for articles with oversized typography and floating minimalism.",
+    "dashboard": "F-Pattern scanning: Top-left most critical metrics, progressive disclosure (show 5-9 items), left-sidebar navigation.",
+    "grid_technical": "Grid items MUST be direct children of grid containers. Overide stretch with align-items: start."
+  },
+  "motion": {
+    "rules": [
+      "Every interaction needs micro-animations (hover states, focus).",
+      "DO NOT use universal transition (`transition: all`). Target specific properties like `transition: transform 0.2s ease, opacity 0.2s ease`.",
+      "Staggered entrance animations for news lists."
+    ]
+  },
+  "component_rules": {
+    "general": [
+      "Do not use native HTML elements for complex interactions (dropdowns, calendars). Use Shadcn UI primitives.",
+      "Override hardcoded dimensions in Shadcn if they break layout (e.g. h-9 to h-auto).",
+      "Buttons: Pill-shaped or sharp corners based on context. Add interaction animations.",
+      "DO NOT center align the app container (.App { text-align: center; } is FORBIDDEN)."
+    ],
+    "toasts": "Use `sonner` located at `/app/src/components/ui/sonner.tsx`."
+  },
+  "accessibility": {
+    "rules": [
+      "Normal text: Min 4.5:1 contrast. Large text: Min 3:1.",
+      "Interactive elements MUST include `data-testid` (e.g., `data-testid=\"breaking-news-link\"`).",
+      "Respect prefers-reduced-motion.",
+      "Explicitly set text color on hover (e.g., `hover:bg-slate-900 hover:text-white`).",
+      "Ensure focus states have higher contrast."
+    ]
+  },
+  "media": {
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1628699543232-dc241b48a4b3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzN8MHwxfHNlYXJjaHwxfHxoaW1hY2hhbCUyMHByYWRlc2glMjBsYW5kc2NhcGUlMjBtb3VudGFpbnN8ZW58MHx8fHwxNzg0MDMwODU5fDA&ixlib=rb-4.1.0&q=85",
+        "description": "brown cow on green grass field near green trees and mountains",
+        "category": "Himachal Pradesh Landscape / About Us / Hero Banner"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1565610468500-adc61f362be5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzN8MHwxfHNlYXJjaHwyfHxoaW1hY2hhbCUyMHByYWRlc2glMjBsYW5kc2NhcGUlMjBtb3VudGFpbnN8ZW58MHx8fHwxNzg0MDMwODU5fDA&ixlib=rb-4.1.0&q=85",
+        "description": "green pine trees near mountain",
+        "category": "Himachal Pradesh Scenic / Filler / Contact"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1609948543911-7f01ff385be5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwxfHxzaGltbGElMjBjaXR5fGVufDB8fHx8MTc4NDAzMDg1OXww&ixlib=rb-4.1.0&q=85",
+        "description": "white and brown concrete building near green trees (Shimla)",
+        "category": "Shimla Local News Thumbnail"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1580795497004-70a347ea4fc3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwzfHxzaGltbGElMjBjaXR5fGVufDB8fHx8MTc4NDAzMDg1OXww&ixlib=rb-4.1.0&q=85",
+        "description": "brown and white concrete buildings (Shimla architecture)",
+        "category": "Shimla City View / District Coverage"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1575507479993-7bb702d5e966?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwyfHxqb3VybmFsaXN0JTIwcmVwb3J0aW5nJTIwbmV3c3xlbnwwfHx8fDE3ODQwMzA4NTl8MA&ixlib=rb-4.1.0&q=85",
+        "description": "black video camera",
+        "category": "Journalist / Send a News Tip"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1738190228336-aa4cf73874b7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwzfHxqb3VybmFsaXN0JTIwcmVwb3J0aW5nJTIwbmV3c3xlbnwwfHx8fDE3ODQwMzA4NTl8MA&ixlib=rb-4.1.0&q=85",
+        "description": "A news paper with the word news on it",
+        "category": "General News Thumbnail / Newsletter"
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Read this JSON and implement exact colors in src/index.css as HSL variables matching the provided HEX colors.",
+    "Install `lucide-react` for icons if not already present.",
+    "Do not build generic components. Build custom layout components (e.g. BentoCard, NewsHero) applying glassmorphism and subtle borders.",
+    "Apply `data-testid` to all navigational elements, form inputs, buttons, and important UI anchors.",
+    "For the admin dashboard, create a separate Layout with a left sidebar using Shadcn components (Table, Dialog, Form) and a clean F-pattern.",
+    "Replace `.App { text-align: center; }` with empty styles in App.css.",
+    "For Typography, load 'Playfair Display' and 'IBM Plex Sans' from Google Fonts in public/index.html.",
+    "Ensure 'Live Point News' feels like a premium, trustworthy entity. Space things out using p-6 or p-8 inside news cards.",
+    "Never use generic AI emojis."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur) for sticky navs and tooltips.",
+    "You MUST NOT apply universal transition (`transition: all`). Target explicit properties.",
+    "You MUST NOT center align the app container.",
+    "Always use modern button styles with interaction animations.",
+    "NEVER use AI assistant Emoji characters (\ud83e\udd16, etc).",
+    "Add `data-testid` attributes to interactive elements."
+  ]
+}

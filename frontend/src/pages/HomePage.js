@@ -84,24 +84,62 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      <div className="logo-watermark"></div>
       <Header />
 
-      {/* Hero Section with Featured News */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black playfair tracking-tight leading-none mb-4" data-testid="hero-title">
-            Hyperlocal Himachal Coverage
-          </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground">Breaking News, First & Fast</p>
+      {/* Premium Hero Section with Royal Blue */}
+      <section className="relative overflow-hidden royal-blue-gradient py-20">
+        <div className="absolute inset-0 world-map-bg"></div>
+        <div className="absolute top-10 right-10 compass-decoration"></div>
+        <div className="absolute bottom-10 left-10 compass-decoration" style={{ animationDirection: 'reverse' }}></div>
+        
+        <div className="wave-pattern">
+          <div className="wave"></div>
+          <div className="wave-2"></div>
         </div>
 
-        {featuredNews.length > 0 && (
-          <div className="mb-12">
-            <NewsCard article={featuredNews[0]} featured={true} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12 animate-fadeInUp">
+            <div className="inline-block mb-6">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_himachal-breaking/artifacts/vxbtuj6d_1784024059432.png" 
+                alt="Live Point News"
+                className="w-32 h-32 object-contain drop-shadow-2xl animate-float"
+              />
+            </div>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black playfair tracking-tight leading-none mb-6 text-white text-shadow-premium" data-testid="hero-title">
+              Hyperlocal Himachal Coverage
+            </h1>
+            <div className="flex items-center justify-center space-x-4 mb-8">
+              <div className="h-1 w-24 bg-gradient-to-r from-primary via-white to-primary"></div>
+              <p className="text-xl sm:text-2xl text-white font-bold tracking-wide">Breaking News, First & Fast</p>
+              <div className="h-1 w-24 bg-gradient-to-r from-primary via-white to-primary"></div>
+            </div>
+            <div className="flex items-center justify-center space-x-8 text-white/80">
+              <div className="flex items-center space-x-2">
+                <CheckCircle size={20} className="text-primary" />
+                <span className="font-bold">Verified</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle size={20} className="text-primary" />
+                <span className="font-bold">Unbiased</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle size={20} className="text-primary" />
+                <span className="font-bold">Real-Time</span>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
       </section>
+
+      {/* Featured News Section */}
+      {featuredNews.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative -mt-20 z-20">
+          <NewsCard article={featuredNews[0]} featured={true} />
+        </section>
+      )}
 
       {/* Latest Headlines */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

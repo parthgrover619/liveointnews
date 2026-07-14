@@ -83,7 +83,7 @@ const ContactPage = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Location</h3>
-                  <p className="text-muted-foreground">Theog, Shimla<br />Himachal Pradesh, India</p>
+                  <p className="text-muted-foreground">Shop No 14, New Bus Stand<br />Theog, Shimla<br />Himachal Pradesh, India</p>
                 </div>
               </div>
             </div>

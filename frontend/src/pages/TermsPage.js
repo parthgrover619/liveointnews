@@ -166,6 +166,7 @@ const TermsPage = () => {
             <div className="bg-muted p-6 rounded">
               <p className="text-muted-foreground">
                 <strong>Live Point News</strong><br />
+                Shop No 14, New Bus Stand<br />
                 Theog, Shimla, Himachal Pradesh<br />
                 Email: livepointnewstheog@gmail.com<br />
                 Website: livepoint.in

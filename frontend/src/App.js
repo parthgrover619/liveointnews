@@ -12,6 +12,7 @@ import TestimonialsPage from '@/pages/TestimonialsPage';
 import AdvertisePage from '@/pages/AdvertisePage';
 import PrivacyPage from '@/pages/PrivacyPage';
 import TermsPage from '@/pages/TermsPage';
+import QRCodePage from '@/pages/QRCodePage';
 
 // Admin pages
 import AdminLogin from '@/pages/admin/AdminLogin';
@@ -35,6 +36,7 @@ function App() {
         <Route path="/advertise" element={<AdvertisePage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
+        <Route path="/qr-code" element={<QRCodePage />} />
         
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />

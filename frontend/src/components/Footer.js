@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, MapPin } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 
 const Footer = () => {
   return (
@@ -53,9 +54,20 @@ const Footer = () => {
           {/* About */}
           <div>
             <h3 className="text-xl font-bold playfair mb-4">Live Point News</h3>
-            <p className="text-sm text-gray-300 leading-relaxed">
+            <p className="text-sm text-gray-300 leading-relaxed mb-4">
               Trusted. Timely. Transparent. Your source for hyperlocal Himachal Pradesh news.
             </p>
+            
+            {/* QR Code */}
+            <div className="bg-white p-3 rounded-lg inline-block">
+              <QRCodeSVG
+                value="https://himachal-breaking.preview.emergentagent.com"
+                size={120}
+                level="M"
+                includeMargin={false}
+              />
+            </div>
+            <p className="text-xs text-gray-400 mt-2">Scan to visit website</p>
           </div>
 
           {/* Quick Links */}
@@ -83,8 +95,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="text-sm text-gray-300 hover:text-white transition-colors duration-200">
-                  Terms of Service
+                <Link to="/qr-code" className="text-sm text-gray-300 hover:text-white transition-colors duration-200">
+                  Download QR Code
                 </Link>
               </li>
             </ul>

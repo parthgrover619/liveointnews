@@ -334,7 +334,7 @@ const HomePage = () => {
               { name: 'Priety', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/g0k33ywn_IMG-20260718-WA0036.jpg' },
               { name: 'Sunil Grover', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/9o2522s7_IMG-20260718-WA0043.jpg' },
               { name: 'Anil Kanwar', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/q20vtxn8_IMG-20260718-WA0046.jpg' },
-              { name: 'Kapil Sharma', photo: null }
+              { name: 'Kapil Thakur', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/m7h353fv_IMG-20260718-WA0048.jpg' }
             ].map((reporter, index) => (
               <div
                 key={index}

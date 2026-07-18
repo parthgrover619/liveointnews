@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Download, Share2, CreditCard } from 'lucide-react';
 
 const QRCodePage = () => {
-  const websiteURL = 'https://himachal-breaking.preview.emergentagent.com';
+  const websiteURL = 'https://livepointnews.com';
   
   const downloadQR = () => {
     const svg = document.getElementById('qr-code-svg');

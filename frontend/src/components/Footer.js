@@ -61,7 +61,7 @@ const Footer = () => {
             {/* QR Code */}
             <div className="bg-white p-3 rounded-lg inline-block">
               <QRCodeSVG
-                value="https://himachal-breaking.preview.emergentagent.com"
+                value="https://livepointnews.com"
                 size={120}
                 level="M"
                 includeMargin={false}

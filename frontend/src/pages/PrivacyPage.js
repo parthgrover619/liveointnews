@@ -20,7 +20,7 @@ const PrivacyPage = () => {
             <p className="text-muted-foreground leading-relaxed">
               Live Point News ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy 
               explains how we collect, use, disclose, and safeguard your information when you visit our website 
-              livepoint.in and use our services.
+              livepointnews.com and use our services.
             </p>
           </section>
 
@@ -147,7 +147,7 @@ const PrivacyPage = () => {
                 Shop No 14, New Bus Stand<br />
                 Theog, Shimla, Himachal Pradesh<br />
                 Email: livepointnewstheog@gmail.com<br />
-                Website: livepoint.in
+                Website: livepointnews.com
               </p>
             </div>
           </section>

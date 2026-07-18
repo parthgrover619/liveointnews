@@ -18,7 +18,7 @@ const TermsPage = () => {
           <section>
             <h2 className="text-2xl font-bold playfair mb-4">1. Acceptance of Terms</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Welcome to Live Point News. By accessing and using our website (livepoint.in) and services, you agree to be 
+              Welcome to Live Point News. By accessing and using our website (livepointnews.com) and services, you agree to be 
               bound by these Terms of Service. If you do not agree to these terms, please do not use our website.
             </p>
           </section>
@@ -169,7 +169,7 @@ const TermsPage = () => {
                 Shop No 14, New Bus Stand<br />
                 Theog, Shimla, Himachal Pradesh<br />
                 Email: livepointnewstheog@gmail.com<br />
-                Website: livepoint.in
+                Website: livepointnews.com
               </p>
             </div>
           </section>

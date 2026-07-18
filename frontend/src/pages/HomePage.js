@@ -322,10 +322,10 @@ const HomePage = () => {
               <span className="text-primary uppercase tracking-[0.3em] text-sm font-black">On The Ground</span>
             </div>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black playfair mb-4">
-              Our <span className="gradient-text">Reporters</span>
+              Our <span className="gradient-text">Senior Reporters</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Meet our dedicated field reporters bringing you news from every corner of Himachal Pradesh
+              Meet our dedicated senior reporters bringing you news from every corner of Himachal Pradesh
             </p>
           </div>
 
@@ -361,7 +361,7 @@ const HomePage = () => {
                     <div className="absolute bottom-0 left-0 right-0 p-4">
                       <div className="flex items-center space-x-2">
                         <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                        <span className="text-xs uppercase tracking-widest text-white font-bold">Reporter</span>
+                        <span className="text-xs uppercase tracking-widest text-white font-bold">Senior Reporter</span>
                       </div>
                     </div>
                   </div>

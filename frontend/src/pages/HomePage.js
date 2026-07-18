@@ -228,6 +228,79 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Partners Section */}
+      <section className="relative overflow-hidden royal-blue-gradient py-16">
+        <div className="absolute inset-0 world-map-bg opacity-20"></div>
+        <div className="absolute inset-0 network-dots"></div>
+        <div className="absolute top-10 right-10 compass-decoration"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12">
+            <div className="inline-block mb-4">
+              <div className="h-1 w-20 bg-gradient-to-r from-primary via-white to-primary mx-auto mb-4"></div>
+              <span className="text-primary uppercase tracking-[0.3em] text-sm font-black">Our Trusted Team</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black playfair text-white text-shadow-premium mb-4">
+              Our Partners
+            </h2>
+            <p className="text-lg text-white/80 max-w-2xl mx-auto">
+              Meet the dedicated professionals behind Live Point News, committed to delivering trusted journalism across Himachal Pradesh
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              'Sunil Sharma',
+              'Sunil Grover',
+              'Rakesh Verma',
+              'Dinesh Hetta',
+              'Anil Kanwar',
+              'Jaivardhan Singh'
+            ].map((partner, index) => (
+              <div
+                key={index}
+                className="group relative perspective-container animate-fadeInUp"
+                style={{ animationDelay: `${index * 0.1}s` }}
+                data-testid={`partner-${index}`}
+              >
+                <div className="card-3d bg-white/95 backdrop-blur-sm border-2 border-white/20 rounded-lg p-8 hover:border-primary transition-all duration-300 shadow-2xl">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-2xl"></div>
+                  
+                  <div className="relative z-10 text-center">
+                    <div className="relative inline-block mb-4">
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary blur-xl opacity-50 animate-pulse-glow"></div>
+                      <div className="relative w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-2xl">
+                        <span className="text-4xl font-black text-white playfair">
+                          {partner.charAt(0)}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold playfair mb-2 group-hover:gradient-text transition-all duration-300">
+                      {partner}
+                    </h3>
+                    
+                    <div className="flex items-center justify-center space-x-2 mt-3">
+                      <div className="h-0.5 w-8 bg-primary"></div>
+                      <span className="text-xs uppercase tracking-widest text-muted-foreground font-bold">Partner</span>
+                      <div className="h-0.5 w-8 bg-primary"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <div className="inline-flex items-center space-x-4 px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
+              <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+              <span className="text-white font-medium">Together, delivering trusted news to Himachal Pradesh</span>
+              <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* YouTube Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-border p-8 text-center">

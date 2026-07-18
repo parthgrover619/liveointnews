@@ -48,6 +48,33 @@ class AdminResponse(BaseModel):
     name: str
     role: str
 
+class ReporterCreate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    phone: str
+    district: Optional[str] = None
+    id_number: Optional[str] = None
+    address: Optional[str] = None
+
+class ReporterUpdate(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    district: Optional[str] = None
+    address: Optional[str] = None
+    password: Optional[str] = None
+
+class Reporter(BaseModel):
+    id: str
+    name: str
+    email: str
+    phone: str
+    district: Optional[str] = None
+    id_number: Optional[str] = None
+    address: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
 class NewsArticleCreate(BaseModel):
     title: str
     content: str
@@ -212,7 +239,7 @@ async def login(credentials: AdminLogin):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
     token = jwt.encode(
-        {"id": admin["id"], "email": admin["email"], "exp": datetime.now(timezone.utc) + timedelta(days=7)},
+        {"id": admin["id"], "email": admin["email"], "role": admin["role"], "exp": datetime.now(timezone.utc) + timedelta(days=7)},
         JWT_SECRET,
         algorithm="HS256"
     )
@@ -221,6 +248,122 @@ async def login(credentials: AdminLogin):
         "token": token,
         "user": {"id": admin["id"], "email": admin["email"], "name": admin["name"], "role": admin["role"]}
     }
+
+@api_router.post("/auth/reporter/login")
+async def reporter_login(credentials: AdminLogin):
+    reporter = await db.reporters.find_one({"email": credentials.email}, {"_id": 0})
+    if not reporter:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    if not bcrypt.checkpw(credentials.password.encode('utf-8'), reporter['password_hash'].encode('utf-8')):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    token = jwt.encode(
+        {"id": reporter["id"], "email": reporter["email"], "role": "reporter", "exp": datetime.now(timezone.utc) + timedelta(days=7)},
+        JWT_SECRET,
+        algorithm="HS256"
+    )
+    
+    return {
+        "token": token,
+        "user": {
+            "id": reporter["id"], 
+            "email": reporter["email"], 
+            "name": reporter["name"], 
+            "role": "reporter"
+        }
+    }
+
+# Reporter routes (Admin only - manage reporters)
+@api_router.post("/admin/reporters", response_model=Reporter)
+async def create_reporter(reporter_data: ReporterCreate, user=Depends(verify_token)):
+    existing = await db.reporters.find_one({"email": reporter_data.email}, {"_id": 0})
+    if existing:
+        raise HTTPException(status_code=400, detail="Reporter with this email already exists")
+    
+    reporter_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    hashed = bcrypt.hashpw(reporter_data.password.encode('utf-8'), bcrypt.gensalt())
+    
+    doc = {
+        "id": reporter_id,
+        "name": reporter_data.name,
+        "email": reporter_data.email,
+        "password_hash": hashed.decode('utf-8'),
+        "phone": reporter_data.phone,
+        "district": reporter_data.district,
+        "id_number": reporter_data.id_number,
+        "address": reporter_data.address,
+        "created_at": now.isoformat(),
+        "updated_at": now.isoformat()
+    }
+    
+    await db.reporters.insert_one(doc)
+    
+    return Reporter(
+        id=reporter_id,
+        name=reporter_data.name,
+        email=reporter_data.email,
+        phone=reporter_data.phone,
+        district=reporter_data.district,
+        id_number=reporter_data.id_number,
+        address=reporter_data.address,
+        created_at=now,
+        updated_at=now
+    )
+
+@api_router.get("/admin/reporters", response_model=List[Reporter])
+async def get_all_reporters(user=Depends(verify_token)):
+    reporters = await db.reporters.find({}, {"_id": 0, "password_hash": 0}).sort("created_at", -1).to_list(1000)
+    for reporter in reporters:
+        reporter['created_at'] = datetime.fromisoformat(reporter['created_at'])
+        reporter['updated_at'] = datetime.fromisoformat(reporter['updated_at'])
+    return reporters
+
+@api_router.delete("/admin/reporters/{reporter_id}")
+async def delete_reporter(reporter_id: str, user=Depends(verify_token)):
+    result = await db.reporters.delete_one({"id": reporter_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Reporter not found")
+    return {"message": "Reporter deleted successfully"}
+
+# Reporter self-service routes (only for the logged-in reporter)
+@api_router.get("/reporter/profile", response_model=Reporter)
+async def get_reporter_profile(user=Depends(verify_token)):
+    if user.get("role") != "reporter":
+        raise HTTPException(status_code=403, detail="Access denied. Reporters only.")
+    
+    reporter = await db.reporters.find_one({"id": user["id"]}, {"_id": 0, "password_hash": 0})
+    if not reporter:
+        raise HTTPException(status_code=404, detail="Reporter not found")
+    
+    reporter['created_at'] = datetime.fromisoformat(reporter['created_at'])
+    reporter['updated_at'] = datetime.fromisoformat(reporter['updated_at'])
+    return Reporter(**reporter)
+
+@api_router.put("/reporter/profile", response_model=Reporter)
+async def update_reporter_profile(update: ReporterUpdate, user=Depends(verify_token)):
+    if user.get("role") != "reporter":
+        raise HTTPException(status_code=403, detail="Access denied. Reporters only.")
+    
+    reporter = await db.reporters.find_one({"id": user["id"]}, {"_id": 0})
+    if not reporter:
+        raise HTTPException(status_code=404, detail="Reporter not found")
+    
+    update_data = {k: v for k, v in update.model_dump().items() if v is not None and k != "password"}
+    
+    if update.password:
+        hashed = bcrypt.hashpw(update.password.encode('utf-8'), bcrypt.gensalt())
+        update_data["password_hash"] = hashed.decode('utf-8')
+    
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    await db.reporters.update_one({"id": user["id"]}, {"$set": update_data})
+    
+    updated = await db.reporters.find_one({"id": user["id"]}, {"_id": 0, "password_hash": 0})
+    updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    updated['updated_at'] = datetime.fromisoformat(updated['updated_at'])
+    return Reporter(**updated)
 
 # Dashboard stats
 @api_router.get("/admin/stats", response_model=DashboardStats)

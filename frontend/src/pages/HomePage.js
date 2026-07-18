@@ -381,16 +381,26 @@ const HomePage = () => {
 
       {/* YouTube Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-border p-8 text-center">
-          <svg className="w-12 h-12 mx-auto mb-4 text-primary fill-current" viewBox="0 0 24 24">
+        <a 
+          href="https://youtube.com/@LIVEPOINTNews-c6o" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="block bg-gradient-to-r from-primary/10 to-secondary/10 border border-border p-8 text-center hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300"
+          data-testid="youtube-channel-link"
+        >
+          <svg className="w-16 h-16 mx-auto mb-4 text-primary fill-current" viewBox="0 0 24 24">
             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
           </svg>
           <h2 className="text-2xl sm:text-3xl font-bold playfair mb-4">Watch Us on YouTube</h2>
-          <p className="text-muted-foreground mb-6">Video news coverage coming soon!</p>
-          <span className="inline-block px-6 py-2 bg-accent text-accent-foreground font-semibold rounded">
-            Coming Soon
+          <p className="text-muted-foreground mb-6">Subscribe to our YouTube channel for video news coverage from Himachal Pradesh</p>
+          <span className="inline-flex items-center space-x-2 px-8 py-3 bg-primary text-primary-foreground font-bold rounded-full hover:bg-primary/90 transition-colors duration-200">
+            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            <span>Subscribe on YouTube</span>
           </span>
-        </div>
+          <p className="text-sm text-muted-foreground mt-4">@LIVEPOINTNews-c6o</p>
+        </a>
       </section>
 
       {/* Newsletter Signup */}

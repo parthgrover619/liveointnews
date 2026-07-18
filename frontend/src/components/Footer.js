@@ -164,7 +164,9 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://youtube.com/@LIVEPOINTNews-c6o"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-200 flex items-center justify-center w-10 h-10"
                 data-testid="footer-youtube"
               >

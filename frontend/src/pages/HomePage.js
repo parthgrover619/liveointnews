@@ -250,12 +250,12 @@ const HomePage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              'Sunil Sharma',
-              'Sunil Grover',
-              'Rakesh Verma',
-              'Dinesh Hetta',
-              'Anil Kanwar',
-              'Jaivardhan Singh'
+              { name: 'Sunil Sharma', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/z5cgusm0_IMG-20260718-WA0042.jpg' },
+              { name: 'Sunil Grover', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/9o2522s7_IMG-20260718-WA0043.jpg' },
+              { name: 'Rakesh Verma', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/bacs9rgj_IMG-20260718-WA0044.jpg' },
+              { name: 'Dinesh Hetta', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/9mz7y5zh_IMG-20260718-WA0045.jpg' },
+              { name: 'Anil Kanwar', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/q20vtxn8_IMG-20260718-WA0046.jpg' },
+              { name: 'Jaivardhan Singh', photo: null }
             ].map((partner, index) => (
               <div
                 key={index}
@@ -269,15 +269,25 @@ const HomePage = () => {
                   <div className="relative z-10 text-center">
                     <div className="relative inline-block mb-4">
                       <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary blur-xl opacity-50 animate-pulse-glow"></div>
-                      <div className="relative w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-2xl">
-                        <span className="text-4xl font-black text-white playfair">
-                          {partner.charAt(0)}
-                        </span>
-                      </div>
+                      {partner.photo ? (
+                        <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden ring-4 ring-primary shadow-2xl">
+                          <img 
+                            src={partner.photo} 
+                            alt={partner.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                        </div>
+                      ) : (
+                        <div className="relative w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-2xl ring-4 ring-primary">
+                          <span className="text-5xl font-black text-white playfair">
+                            {partner.name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     
                     <h3 className="text-xl font-bold playfair mb-2 group-hover:gradient-text transition-all duration-300">
-                      {partner}
+                      {partner.name}
                     </h3>
                     
                     <div className="flex items-center justify-center space-x-2 mt-3">

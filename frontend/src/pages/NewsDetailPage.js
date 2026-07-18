@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import VideoPlayer from '@/components/VideoPlayer';
 import { Calendar, User, Share2 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -115,8 +116,12 @@ const NewsDetailPage = () => {
           </button>
         </div>
 
-        {/* Featured image */}
-        {article.image && (
+        {/* Featured image or video */}
+        {article.video_url ? (
+          <div className="mb-8">
+            <VideoPlayer url={article.video_url} title={article.title} />
+          </div>
+        ) : article.image ? (
           <div className="mb-8 rounded overflow-hidden">
             <img
               src={article.image}
@@ -124,7 +129,7 @@ const NewsDetailPage = () => {
               className="w-full h-auto"
             />
           </div>
-        )}
+        ) : null}
 
         {/* Content */}
         <div className="prose prose-lg max-w-none" data-testid="article-content">

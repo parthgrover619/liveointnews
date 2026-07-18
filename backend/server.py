@@ -55,6 +55,7 @@ class NewsArticleCreate(BaseModel):
     district: Optional[str] = None
     author: str
     image: Optional[str] = None
+    video_url: Optional[str] = None
     excerpt: str
     status: str = "draft"
     featured: bool = False
@@ -67,6 +68,7 @@ class NewsArticleUpdate(BaseModel):
     district: Optional[str] = None
     author: Optional[str] = None
     image: Optional[str] = None
+    video_url: Optional[str] = None
     excerpt: Optional[str] = None
     status: Optional[str] = None
     featured: Optional[bool] = None
@@ -80,6 +82,7 @@ class NewsArticle(BaseModel):
     district: Optional[str] = None
     author: str
     image: Optional[str] = None
+    video_url: Optional[str] = None
     excerpt: str
     status: str
     featured: bool

@@ -23,6 +23,7 @@ const AdminNews = () => {
     district: '',
     author: '',
     image: '',
+    video_url: '',
     status: 'draft',
     featured: false,
     trending: false,
@@ -96,6 +97,7 @@ const AdminNews = () => {
       district: article.district || '',
       author: article.author,
       image: article.image || '',
+      video_url: article.video_url || '',
       status: article.status,
       featured: article.featured,
       trending: article.trending,
@@ -128,6 +130,7 @@ const AdminNews = () => {
       district: '',
       author: '',
       image: '',
+      video_url: '',
       status: 'draft',
       featured: false,
       trending: false,
@@ -332,6 +335,21 @@ const AdminNews = () => {
                   className="w-full px-4 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
                   data-testid="news-image-input"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Video URL (YouTube or Direct Link)</label>
+                <input
+                  type="url"
+                  value={formData.video_url}
+                  onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
+                  placeholder="https://youtube.com/watch?v=... or https://example.com/video.mp4"
+                  className="w-full px-4 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                  data-testid="news-video-input"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Supports YouTube, Vimeo, or direct video links (.mp4, .webm)
+                </p>
               </div>
             </div>
 

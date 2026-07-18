@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, ArrowRight, TrendingUp } from 'lucide-react';
+import { Calendar, ArrowRight, TrendingUp, Play } from 'lucide-react';
 
 const NewsCard = ({ article, featured = false }) => {
   const formatDate = (dateString) => {
@@ -25,6 +25,13 @@ const NewsCard = ({ article, featured = false }) => {
                 alt={article.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
+              {article.video_url && (
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <div className="w-20 h-20 bg-primary/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-2xl">
+                    <Play size={32} className="text-white fill-white ml-1" />
+                  </div>
+                </div>
+              )}
               {article.trending && (
                 <div className="absolute top-4 right-4 z-20 px-4 py-2 bg-accent text-accent-foreground text-xs font-bold rounded-full flex items-center space-x-2 animate-float shadow-lg">
                   <TrendingUp size={14} />
@@ -79,6 +86,13 @@ const NewsCard = ({ article, featured = false }) => {
               alt={article.title}
               className="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-1 transition-all duration-700"
             />
+            {article.video_url && (
+              <div className="absolute inset-0 flex items-center justify-center z-20">
+                <div className="w-16 h-16 bg-primary/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                  <Play size={24} className="text-white fill-white ml-1" />
+                </div>
+              </div>
+            )}
             {article.trending && (
               <div className="absolute top-3 right-3 z-20 px-3 py-1 bg-accent text-accent-foreground text-xs font-bold rounded-full shadow-lg">
                 HOT

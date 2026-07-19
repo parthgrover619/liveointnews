@@ -311,30 +311,88 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Reporters Section */}
+      {/* Reporters Section - Two Panels */}
       <section className="relative overflow-hidden py-16 bg-white">
         <div className="absolute inset-0 hero-pattern opacity-40"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Senior Reporters Panel */}
           <div className="text-center mb-12">
             <div className="inline-block mb-4">
               <div className="h-1 w-20 bg-gradient-to-r from-primary via-secondary to-primary mx-auto mb-4"></div>
-              <span className="text-primary uppercase tracking-[0.3em] text-sm font-black">On The Ground</span>
+              <span className="text-primary uppercase tracking-[0.3em] text-sm font-black">Leadership Coverage</span>
             </div>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black playfair mb-4">
               Our <span className="gradient-text">Senior Reporters</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Meet our dedicated senior reporters bringing you news from every corner of Himachal Pradesh
+              Experienced senior journalists delivering trusted news across Himachal Pradesh
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto mb-16">
             {[
-              { name: 'Priety', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/g0k33ywn_IMG-20260718-WA0036.jpg' },
               { name: 'Sunil Grover', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/9o2522s7_IMG-20260718-WA0043.jpg' },
               { name: 'Anil Kanwar', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/q20vtxn8_IMG-20260718-WA0046.jpg' },
-              { name: 'Kapil Thakur', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/m7h353fv_IMG-20260718-WA0048.jpg' }
+            ].map((reporter, index) => (
+              <div
+                key={index}
+                className="group relative perspective-container animate-fadeInUp"
+                style={{ animationDelay: `${index * 0.1}s` }}
+                data-testid={`senior-reporter-${index}`}
+              >
+                <div className="card-3d bg-white border-2 border-border rounded-lg overflow-hidden hover:border-primary transition-all duration-300 shadow-xl">
+                  <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10">
+                    <img 
+                      src={reporter.photo} 
+                      alt={reporter.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                        <span className="text-xs uppercase tracking-widest text-white font-bold">Senior Reporter</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 text-center">
+                    <h3 className="text-lg font-bold playfair group-hover:text-primary transition-colors duration-300">
+                      {reporter.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-1">Live Point News</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center justify-center my-12">
+            <div className="h-px w-24 bg-gradient-to-r from-transparent to-primary"></div>
+            <div className="mx-4 w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+            <div className="h-px w-24 bg-gradient-to-l from-transparent to-primary"></div>
+          </div>
+
+          {/* Reporters Panel */}
+          <div className="text-center mb-12">
+            <div className="inline-block mb-4">
+              <div className="h-1 w-20 bg-gradient-to-r from-secondary via-primary to-secondary mx-auto mb-4"></div>
+              <span className="text-secondary uppercase tracking-[0.3em] text-sm font-black">On The Ground</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black playfair mb-4">
+              Our <span className="gradient-text">Reporters</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Dedicated field reporters covering local stories with passion and precision
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {[
+              { name: 'Priety', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/g0k33ywn_IMG-20260718-WA0036.jpg' },
+              { name: 'Kapil Thakur', photo: 'https://customer-assets-jai6qajn.emergentagent.net/job_himachal-breaking/artifacts/m7h353fv_IMG-20260718-WA0048.jpg' },
             ].map((reporter, index) => (
               <div
                 key={index}
@@ -344,24 +402,16 @@ const HomePage = () => {
               >
                 <div className="card-3d bg-white border-2 border-border rounded-lg overflow-hidden hover:border-primary transition-all duration-300 shadow-xl">
                   <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10">
-                    {reporter.photo ? (
-                      <img 
-                        src={reporter.photo} 
-                        alt={reporter.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-6xl font-black gradient-text playfair">
-                          {reporter.name.charAt(0)}
-                        </span>
-                      </div>
-                    )}
+                    <img 
+                      src={reporter.photo} 
+                      alt={reporter.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-4">
                       <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                        <span className="text-xs uppercase tracking-widest text-white font-bold">Senior Reporter</span>
+                        <div className="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+                        <span className="text-xs uppercase tracking-widest text-white font-bold">Reporter</span>
                       </div>
                     </div>
                   </div>

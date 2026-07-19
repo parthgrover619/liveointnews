@@ -22,6 +22,7 @@ import AdminNewsTips from '@/pages/admin/AdminNewsTips';
 import AdminSubscribers from '@/pages/admin/AdminSubscribers';
 import AdminContacts from '@/pages/admin/AdminContacts';
 import AdminReporters from '@/pages/admin/AdminReporters';
+import AdminSettings from '@/pages/admin/AdminSettings';
 
 // Reporter pages
 import ReporterLogin from '@/pages/reporter/ReporterLogin';
@@ -53,6 +54,7 @@ function App() {
         <Route path="/admin/subscribers" element={<AdminSubscribers />} />
         <Route path="/admin/contacts" element={<AdminContacts />} />
         <Route path="/admin/reporters" element={<AdminReporters />} />
+        <Route path="/admin/settings" element={<AdminSettings />} />
         
         {/* Reporter routes */}
         <Route path="/reporter/login" element={<ReporterLogin />} />

@@ -199,14 +199,14 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 
 # Seed admin user
 async def seed_admin():
-    admin_exists = await db.admins.find_one({"email": "admin@livepoint.in"}, {"_id": 0})
+    admin_exists = await db.admins.find_one({"email": "sunilsharma@livepoint.in"}, {"_id": 0})
     if not admin_exists:
-        hashed = bcrypt.hashpw("LivePoint@Owner2026".encode('utf-8'), bcrypt.gensalt())
+        hashed = bcrypt.hashpw("theogshimla*1".encode('utf-8'), bcrypt.gensalt())
         admin_doc = {
             "id": str(uuid.uuid4()),
-            "email": "admin@livepoint.in",
+            "email": "sunilsharma@livepoint.in",
             "password_hash": hashed.decode('utf-8'),
-            "name": "Owner",
+            "name": "Sunil Sharma",
             "role": "admin",
             "created_at": datetime.now(timezone.utc).isoformat()
         }

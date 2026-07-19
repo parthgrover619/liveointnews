@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, Home, Newspaper, MessageSquare, Users, Mail } from 'lucide-react';
+import { LogOut, Home, Newspaper, MessageSquare, Users, Mail, UserCog } from 'lucide-react';
 
 const AdminLayout = ({ children, title }) => {
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ const AdminLayout = ({ children, title }) => {
   const navItems = [
     { icon: Home, label: 'Dashboard', path: '/admin', testId: 'nav-dashboard' },
     { icon: Newspaper, label: 'News Articles', path: '/admin/news', testId: 'nav-news' },
+    { icon: UserCog, label: 'Reporters & Users', path: '/admin/reporters', testId: 'nav-reporters' },
     { icon: MessageSquare, label: 'News Tips', path: '/admin/tips', testId: 'nav-tips' },
     { icon: Users, label: 'Subscribers', path: '/admin/subscribers', testId: 'nav-subscribers' },
     { icon: Mail, label: 'Contact Messages', path: '/admin/contacts', testId: 'nav-contacts' },

@@ -27,7 +27,9 @@ const AdminNews = () => {
     status: 'draft',
     featured: false,
     trending: false,
+    tags: [],
   });
+  const [tagInput, setTagInput] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,6 +103,7 @@ const AdminNews = () => {
       status: article.status,
       featured: article.featured,
       trending: article.trending,
+      tags: article.tags || [],
     });
     setEditingId(article.id);
     setShowForm(true);
@@ -134,7 +137,20 @@ const AdminNews = () => {
       status: 'draft',
       featured: false,
       trending: false,
+      tags: [],
     });
+    setTagInput('');
+  };
+
+  const addTag = () => {
+    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
+      setFormData({ ...formData, tags: [...formData.tags, tagInput.trim()] });
+      setTagInput('');
+    }
+  };
+
+  const removeTag = (tagToRemove) => {
+    setFormData({ ...formData, tags: formData.tags.filter(t => t !== tagToRemove) });
   };
 
   const quillModules = {
@@ -375,6 +391,44 @@ const AdminNews = () => {
                 modules={quillModules}
                 className="bg-white"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Tags</label>
+              <div className="flex space-x-2 mb-2">
+                <input
+                  type="text"
+                  value={tagInput}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }}
+                  placeholder="Type a tag and press Enter or click Add"
+                  className="flex-1 px-4 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                  data-testid="tag-input"
+                />
+                <button
+                  type="button"
+                  onClick={addTag}
+                  className="px-4 py-2 bg-secondary text-white rounded hover:bg-secondary/90 transition-colors"
+                  data-testid="add-tag-button"
+                >
+                  Add Tag
+                </button>
+              </div>
+              {formData.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {formData.tags.map((tag, i) => (
+                    <span key={i} className="inline-flex items-center space-x-1 px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">
+                      <span>#{tag}</span>
+                      <button type="button" onClick={() => removeTag(tag)} className="hover:text-red-500">
+                        <X size={14} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground mt-1">
+                Tags help readers find related content. Example: election, weather, festival
+              </p>
             </div>
 
             <div className="flex items-center space-x-6">

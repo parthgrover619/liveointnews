@@ -21,6 +21,13 @@ import AdminNews from '@/pages/admin/AdminNews';
 import AdminNewsTips from '@/pages/admin/AdminNewsTips';
 import AdminSubscribers from '@/pages/admin/AdminSubscribers';
 import AdminContacts from '@/pages/admin/AdminContacts';
+import AdminReporters from '@/pages/admin/AdminReporters';
+
+// Reporter pages
+import ReporterLogin from '@/pages/reporter/ReporterLogin';
+import ReporterDashboard from '@/pages/reporter/ReporterDashboard';
+import ReporterNews from '@/pages/reporter/ReporterNews';
+import ReporterProfile from '@/pages/reporter/ReporterProfile';
 
 function App() {
   return (
@@ -45,6 +52,13 @@ function App() {
         <Route path="/admin/tips" element={<AdminNewsTips />} />
         <Route path="/admin/subscribers" element={<AdminSubscribers />} />
         <Route path="/admin/contacts" element={<AdminContacts />} />
+        <Route path="/admin/reporters" element={<AdminReporters />} />
+        
+        {/* Reporter routes */}
+        <Route path="/reporter/login" element={<ReporterLogin />} />
+        <Route path="/reporter/dashboard" element={<ReporterDashboard />} />
+        <Route path="/reporter/news" element={<ReporterNews />} />
+        <Route path="/reporter/profile" element={<ReporterProfile />} />
       </Routes>
     </BrowserRouter>
   );

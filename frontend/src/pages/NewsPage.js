@@ -4,7 +4,7 @@ import axios from 'axios';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import NewsCard from '@/components/NewsCard';
-import { Filter } from 'lucide-react';
+import { Filter, Search, Calendar } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -14,6 +14,9 @@ const NewsPage = () => {
   const [news, setNews] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,6 +25,7 @@ const NewsPage = () => {
 
   useEffect(() => {
     fetchNews();
+    // eslint-disable-next-line
   }, [selectedCategory]);
 
   const fetchCategories = async () => {
@@ -29,7 +33,7 @@ const NewsPage = () => {
       const response = await axios.get(`${API}/categories`);
       setCategories(response.data);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('Error:', error);
     }
   };
 
@@ -37,14 +41,15 @@ const NewsPage = () => {
     setLoading(true);
     try {
       const params = {};
-      if (selectedCategory) {
-        params.category = selectedCategory;
-      }
+      if (selectedCategory) params.category = selectedCategory;
+      if (searchQuery) params.search = searchQuery;
+      if (dateFrom) params.date_from = dateFrom;
+      if (dateTo) params.date_to = dateTo;
       
       const response = await axios.get(`${API}/news`, { params });
       setNews(response.data);
     } catch (error) {
-      console.error('Error fetching news:', error);
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
@@ -52,11 +57,21 @@ const NewsPage = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    if (category) {
-      setSearchParams({ category });
-    } else {
-      setSearchParams({});
-    }
+    if (category) setSearchParams({ category });
+    else setSearchParams({});
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchNews();
+  };
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setDateFrom('');
+    setDateTo('');
+    setSelectedCategory('');
+    setSearchParams({});
   };
 
   return (
@@ -68,7 +83,70 @@ const NewsPage = () => {
           All News
         </h1>
 
-        {/* Filter */}
+        {/* Search & Date Filter */}
+        <form onSubmit={handleSearch} className="mb-8 bg-white p-6 rounded-lg border border-border shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium mb-2 flex items-center space-x-2">
+                <Search size={16} />
+                <span>Search News</span>
+              </label>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by title, content, or keyword..."
+                className="w-full px-4 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                data-testid="news-search-input"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-2 flex items-center space-x-2">
+                <Calendar size={16} />
+                <span>From Date</span>
+              </label>
+              <input
+                type="date"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+                className="w-full px-4 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                data-testid="date-from-input"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-2 flex items-center space-x-2">
+                <Calendar size={16} />
+                <span>To Date</span>
+              </label>
+              <input
+                type="date"
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
+                className="w-full px-4 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                data-testid="date-to-input"
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 mt-4">
+            <button
+              type="submit"
+              className="px-6 py-2 bg-primary text-white font-semibold rounded hover:bg-primary/90 transition-colors"
+              data-testid="search-submit"
+            >
+              Apply Filters
+            </button>
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="px-6 py-2 bg-white border border-border font-semibold rounded hover:bg-muted transition-colors"
+              data-testid="clear-filters"
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+
+        {/* Category Filter */}
         <div className="mb-8">
           <div className="flex items-center space-x-2 mb-4">
             <Filter size={20} className="text-primary" />
@@ -111,14 +189,17 @@ const NewsPage = () => {
           </div>
         ) : news.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">No news articles found.</p>
+            <p className="text-muted-foreground">No news articles found matching your filters.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {news.map((article) => (
-              <NewsCard key={article.id} article={article} />
-            ))}
-          </div>
+          <>
+            <p className="text-sm text-muted-foreground mb-4">Found {news.length} article(s)</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {news.map((article) => (
+                <NewsCard key={article.id} article={article} />
+              ))}
+            </div>
+          </>
         )}
       </div>
 

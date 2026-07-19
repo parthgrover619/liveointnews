@@ -56,6 +56,8 @@ class ReporterCreate(BaseModel):
     district: Optional[str] = None
     id_number: Optional[str] = None
     address: Optional[str] = None
+    photo: Optional[str] = None
+    role: str = "reporter"
 
 class ReporterUpdate(BaseModel):
     name: Optional[str] = None
@@ -63,6 +65,8 @@ class ReporterUpdate(BaseModel):
     district: Optional[str] = None
     address: Optional[str] = None
     password: Optional[str] = None
+    photo: Optional[str] = None
+    role: Optional[str] = None
 
 class Reporter(BaseModel):
     id: str
@@ -72,6 +76,8 @@ class Reporter(BaseModel):
     district: Optional[str] = None
     id_number: Optional[str] = None
     address: Optional[str] = None
+    photo: Optional[str] = None
+    role: str = "reporter"
     created_at: datetime
     updated_at: datetime
 
@@ -87,6 +93,7 @@ class NewsArticleCreate(BaseModel):
     status: str = "draft"
     featured: bool = False
     trending: bool = False
+    tags: Optional[List[str]] = []
 
 class NewsArticleUpdate(BaseModel):
     title: Optional[str] = None
@@ -100,6 +107,7 @@ class NewsArticleUpdate(BaseModel):
     status: Optional[str] = None
     featured: Optional[bool] = None
     trending: Optional[bool] = None
+    tags: Optional[List[str]] = None
 
 class NewsArticle(BaseModel):
     id: str
@@ -108,12 +116,15 @@ class NewsArticle(BaseModel):
     category: str
     district: Optional[str] = None
     author: str
+    author_id: Optional[str] = None
+    author_role: Optional[str] = None
     image: Optional[str] = None
     video_url: Optional[str] = None
     excerpt: str
     status: str
     featured: bool
     trending: bool
+    tags: Optional[List[str]] = []
     created_at: datetime
     updated_at: datetime
 
@@ -174,6 +185,8 @@ class DashboardStats(BaseModel):
     pending_tips: int
     total_subscribers: int
     total_contacts: int
+    total_reporters: int = 0
+    my_articles: int = 0
 
 # Auth helper
 async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
@@ -258,8 +271,9 @@ async def reporter_login(credentials: AdminLogin):
     if not bcrypt.checkpw(credentials.password.encode('utf-8'), reporter['password_hash'].encode('utf-8')):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
+    role = reporter.get("role", "reporter")
     token = jwt.encode(
-        {"id": reporter["id"], "email": reporter["email"], "role": "reporter", "exp": datetime.now(timezone.utc) + timedelta(days=7)},
+        {"id": reporter["id"], "email": reporter["email"], "role": role, "exp": datetime.now(timezone.utc) + timedelta(days=7)},
         JWT_SECRET,
         algorithm="HS256"
     )
@@ -270,7 +284,8 @@ async def reporter_login(credentials: AdminLogin):
             "id": reporter["id"], 
             "email": reporter["email"], 
             "name": reporter["name"], 
-            "role": "reporter"
+            "role": role,
+            "photo": reporter.get("photo")
         }
     }
 
@@ -294,6 +309,8 @@ async def create_reporter(reporter_data: ReporterCreate, user=Depends(verify_tok
         "district": reporter_data.district,
         "id_number": reporter_data.id_number,
         "address": reporter_data.address,
+        "photo": reporter_data.photo,
+        "role": reporter_data.role,
         "created_at": now.isoformat(),
         "updated_at": now.isoformat()
     }
@@ -308,6 +325,8 @@ async def create_reporter(reporter_data: ReporterCreate, user=Depends(verify_tok
         district=reporter_data.district,
         id_number=reporter_data.id_number,
         address=reporter_data.address,
+        photo=reporter_data.photo,
+        role=reporter_data.role,
         created_at=now,
         updated_at=now
     )
@@ -368,6 +387,26 @@ async def update_reporter_profile(update: ReporterUpdate, user=Depends(verify_to
 # Dashboard stats
 @api_router.get("/admin/stats", response_model=DashboardStats)
 async def get_dashboard_stats(user=Depends(verify_token)):
+    role = user.get("role", "admin")
+    
+    if role == "reporter":
+        # Reporters see only stats for their own articles
+        my_total = await db.news_articles.count_documents({"author_id": user["id"]})
+        my_published = await db.news_articles.count_documents({"author_id": user["id"], "status": "published"})
+        my_draft = await db.news_articles.count_documents({"author_id": user["id"], "status": "draft"})
+        
+        return DashboardStats(
+            total_articles=my_total,
+            published_articles=my_published,
+            draft_articles=my_draft,
+            total_tips=0,
+            pending_tips=0,
+            total_subscribers=0,
+            total_contacts=0,
+            total_reporters=0,
+            my_articles=my_total
+        )
+    
     total_articles = await db.news_articles.count_documents({})
     published = await db.news_articles.count_documents({"status": "published"})
     draft = await db.news_articles.count_documents({"status": "draft"})
@@ -375,6 +414,7 @@ async def get_dashboard_stats(user=Depends(verify_token)):
     pending_tips = await db.news_tips.count_documents({"status": "pending"})
     total_subscribers = await db.newsletter_subscribers.count_documents({})
     total_contacts = await db.contact_messages.count_documents({})
+    total_reporters = await db.reporters.count_documents({})
     
     return DashboardStats(
         total_articles=total_articles,
@@ -383,7 +423,9 @@ async def get_dashboard_stats(user=Depends(verify_token)):
         total_tips=total_tips,
         pending_tips=pending_tips,
         total_subscribers=total_subscribers,
-        total_contacts=total_contacts
+        total_contacts=total_contacts,
+        total_reporters=total_reporters,
+        my_articles=0
     )
 
 # News articles routes
@@ -395,6 +437,8 @@ async def create_news_article(article: NewsArticleCreate, user=Depends(verify_to
     doc = {
         "id": article_id,
         **article.model_dump(),
+        "author_id": user.get("id"),
+        "author_role": user.get("role", "admin"),
         "created_at": now.isoformat(),
         "updated_at": now.isoformat()
     }
@@ -404,7 +448,13 @@ async def create_news_article(article: NewsArticleCreate, user=Depends(verify_to
 
 @api_router.get("/admin/news", response_model=List[NewsArticle])
 async def get_all_news_admin(user=Depends(verify_token)):
-    articles = await db.news_articles.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    role = user.get("role", "admin")
+    query = {}
+    # Reporters see only their own articles
+    if role == "reporter":
+        query["author_id"] = user["id"]
+    
+    articles = await db.news_articles.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
     for article in articles:
         article['created_at'] = datetime.fromisoformat(article['created_at'])
         article['updated_at'] = datetime.fromisoformat(article['updated_at'])
@@ -416,6 +466,10 @@ async def get_published_news(
     district: Optional[str] = None,
     featured: Optional[bool] = None,
     trending: Optional[bool] = None,
+    search: Optional[str] = None,
+    date_from: Optional[str] = None,
+    date_to: Optional[str] = None,
+    tag: Optional[str] = None,
     limit: int = 50
 ):
     query = {"status": "published"}
@@ -427,6 +481,21 @@ async def get_published_news(
         query["featured"] = featured
     if trending is not None:
         query["trending"] = trending
+    if tag:
+        query["tags"] = tag
+    if search:
+        query["$or"] = [
+            {"title": {"$regex": search, "$options": "i"}},
+            {"content": {"$regex": search, "$options": "i"}},
+            {"excerpt": {"$regex": search, "$options": "i"}},
+        ]
+    if date_from or date_to:
+        date_query = {}
+        if date_from:
+            date_query["$gte"] = date_from
+        if date_to:
+            date_query["$lte"] = date_to
+        query["created_at"] = date_query
     
     articles = await db.news_articles.find(query, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
     for article in articles:
@@ -449,6 +518,11 @@ async def update_news_article(article_id: str, update: NewsArticleUpdate, user=D
     if not article:
         raise HTTPException(status_code=404, detail="Article not found")
     
+    # Reporters can only edit their own articles
+    role = user.get("role", "admin")
+    if role == "reporter" and article.get("author_id") != user["id"]:
+        raise HTTPException(status_code=403, detail="You can only edit your own articles")
+    
     update_data = {k: v for k, v in update.model_dump().items() if v is not None}
     update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
     
@@ -461,9 +535,15 @@ async def update_news_article(article_id: str, update: NewsArticleUpdate, user=D
 
 @api_router.delete("/admin/news/{article_id}")
 async def delete_news_article(article_id: str, user=Depends(verify_token)):
-    result = await db.news_articles.delete_one({"id": article_id})
-    if result.deleted_count == 0:
+    article = await db.news_articles.find_one({"id": article_id}, {"_id": 0})
+    if not article:
         raise HTTPException(status_code=404, detail="Article not found")
+    
+    role = user.get("role", "admin")
+    if role == "reporter" and article.get("author_id") != user["id"]:
+        raise HTTPException(status_code=403, detail="You can only delete your own articles")
+    
+    await db.news_articles.delete_one({"id": article_id})
     return {"message": "Article deleted successfully"}
 
 # Categories

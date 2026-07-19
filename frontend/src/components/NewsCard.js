@@ -2,11 +2,48 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight, TrendingUp, Play } from 'lucide-react';
 
-const NewsCard = ({ article, featured = false }) => {
+const NewsCard = ({ article, featured = false, compact = false }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
   };
+
+  if (compact) {
+    return (
+      <Link
+        to={`/news/${article.id}`}
+        className="group flex gap-3 items-start hover:bg-muted/40 -mx-2 px-2 py-1 rounded transition-colors"
+        data-testid={`compact-news-${article.id}`}
+      >
+        {article.image && (
+          <div className="w-24 h-20 shrink-0 overflow-hidden rounded relative">
+            <img
+              src={article.image}
+              alt={article.title}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            {article.video_url && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                <Play size={18} className="text-white fill-white" />
+              </div>
+            )}
+          </div>
+        )}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] uppercase tracking-widest font-bold text-primary">{article.category}</span>
+          </div>
+          <h4 className="text-sm font-bold playfair leading-snug line-clamp-3 group-hover:text-primary transition-colors">
+            {article.title}
+          </h4>
+          <div className="flex items-center gap-1 text-[11px] text-muted-foreground mt-1">
+            <Calendar size={10} />
+            <span>{formatDate(article.created_at)}</span>
+          </div>
+        </div>
+      </Link>
+    );
+  }
 
   if (featured) {
     return (

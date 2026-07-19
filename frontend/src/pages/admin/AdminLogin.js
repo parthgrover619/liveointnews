@@ -91,14 +91,6 @@ const AdminLogin = () => {
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
-
-          <div className="mt-6 p-4 bg-muted rounded text-sm">
-            <p className="text-muted-foreground">
-              <strong>Test Credentials:</strong><br />
-              Email: admin@livepoint.in<br />
-              Password: admin123
-            </p>
-          </div>
         </div>
       </div>
     </div>

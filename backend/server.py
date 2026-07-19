@@ -201,17 +201,17 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 async def seed_admin():
     admin_exists = await db.admins.find_one({"email": "admin@livepoint.in"}, {"_id": 0})
     if not admin_exists:
-        hashed = bcrypt.hashpw("admin123".encode('utf-8'), bcrypt.gensalt())
+        hashed = bcrypt.hashpw("LivePoint@Owner2026".encode('utf-8'), bcrypt.gensalt())
         admin_doc = {
             "id": str(uuid.uuid4()),
             "email": "admin@livepoint.in",
             "password_hash": hashed.decode('utf-8'),
-            "name": "Admin User",
+            "name": "Owner",
             "role": "admin",
             "created_at": datetime.now(timezone.utc).isoformat()
         }
         await db.admins.insert_one(admin_doc)
-        logger.info("Admin user seeded: admin@livepoint.in / admin123")
+        logger.info("Admin user seeded")
 
 # Seed categories
 async def seed_categories():

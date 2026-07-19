@@ -178,12 +178,33 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-white/10 mt-12 pt-8 text-center">
-          <p className="text-sm text-gray-400">
+      {/* Bottom bar with team login */}
+      <div className="border-t border-white/10 mt-12 pt-8 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+          <p className="text-sm text-gray-400 text-center">
             © {new Date().getFullYear()} Live Point News. All rights reserved.
           </p>
+          <div className="flex items-center space-x-4 text-sm">
+            <Link 
+              to="/reporter/login" 
+              className="text-gray-400 hover:text-primary transition-colors duration-200 flex items-center space-x-1"
+              data-testid="reporter-login-link"
+            >
+              <span>📝</span>
+              <span>Reporter Login</span>
+            </Link>
+            <span className="text-gray-600">|</span>
+            <Link 
+              to="/admin/login" 
+              className="text-gray-400 hover:text-primary transition-colors duration-200 flex items-center space-x-1"
+              data-testid="admin-login-link"
+            >
+              <span>🔐</span>
+              <span>Admin Login</span>
+            </Link>
+          </div>
         </div>
+      </div>
       </div>
     </footer>
   );

@@ -387,26 +387,7 @@ async def update_reporter_profile(update: ReporterUpdate, user=Depends(verify_to
 # Dashboard stats
 @api_router.get("/admin/stats", response_model=DashboardStats)
 async def get_dashboard_stats(user=Depends(verify_token)):
-    role = user.get("role", "admin")
-    
-    if role == "reporter":
-        # Reporters see only stats for their own articles
-        my_total = await db.news_articles.count_documents({"author_id": user["id"]})
-        my_published = await db.news_articles.count_documents({"author_id": user["id"], "status": "published"})
-        my_draft = await db.news_articles.count_documents({"author_id": user["id"], "status": "draft"})
-        
-        return DashboardStats(
-            total_articles=my_total,
-            published_articles=my_published,
-            draft_articles=my_draft,
-            total_tips=0,
-            pending_tips=0,
-            total_subscribers=0,
-            total_contacts=0,
-            total_reporters=0,
-            my_articles=my_total
-        )
-    
+    # All users see team-wide stats
     total_articles = await db.news_articles.count_documents({})
     published = await db.news_articles.count_documents({"status": "published"})
     draft = await db.news_articles.count_documents({"status": "draft"})
@@ -415,6 +396,11 @@ async def get_dashboard_stats(user=Depends(verify_token)):
     total_subscribers = await db.newsletter_subscribers.count_documents({})
     total_contacts = await db.contact_messages.count_documents({})
     total_reporters = await db.reporters.count_documents({})
+    
+    # For reporters, also show their own count
+    my_articles = 0
+    if user.get("role") == "reporter":
+        my_articles = await db.news_articles.count_documents({"author_id": user["id"]})
     
     return DashboardStats(
         total_articles=total_articles,
@@ -425,7 +411,7 @@ async def get_dashboard_stats(user=Depends(verify_token)):
         total_subscribers=total_subscribers,
         total_contacts=total_contacts,
         total_reporters=total_reporters,
-        my_articles=0
+        my_articles=my_articles
     )
 
 # News articles routes
@@ -448,13 +434,8 @@ async def create_news_article(article: NewsArticleCreate, user=Depends(verify_to
 
 @api_router.get("/admin/news", response_model=List[NewsArticle])
 async def get_all_news_admin(user=Depends(verify_token)):
-    role = user.get("role", "admin")
-    query = {}
-    # Reporters see only their own articles
-    if role == "reporter":
-        query["author_id"] = user["id"]
-    
-    articles = await db.news_articles.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    # All users (admin, editor, reporter) can see all articles - team collaboration
+    articles = await db.news_articles.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
     for article in articles:
         article['created_at'] = datetime.fromisoformat(article['created_at'])
         article['updated_at'] = datetime.fromisoformat(article['updated_at'])
@@ -518,11 +499,7 @@ async def update_news_article(article_id: str, update: NewsArticleUpdate, user=D
     if not article:
         raise HTTPException(status_code=404, detail="Article not found")
     
-    # Reporters can only edit their own articles
-    role = user.get("role", "admin")
-    if role == "reporter" and article.get("author_id") != user["id"]:
-        raise HTTPException(status_code=403, detail="You can only edit your own articles")
-    
+    # All team members (admin, editor, reporter) can edit any article
     update_data = {k: v for k, v in update.model_dump().items() if v is not None}
     update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
     
@@ -539,9 +516,10 @@ async def delete_news_article(article_id: str, user=Depends(verify_token)):
     if not article:
         raise HTTPException(status_code=404, detail="Article not found")
     
+    # Only admins and editors can delete - reporters cannot delete
     role = user.get("role", "admin")
-    if role == "reporter" and article.get("author_id") != user["id"]:
-        raise HTTPException(status_code=403, detail="You can only delete your own articles")
+    if role == "reporter":
+        raise HTTPException(status_code=403, detail="Reporters cannot delete articles. Contact your admin.")
     
     await db.news_articles.delete_one({"id": article_id})
     return {"message": "Article deleted successfully"}

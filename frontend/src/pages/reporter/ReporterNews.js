@@ -122,10 +122,13 @@ const ReporterNews = () => {
   };
 
   return (
-    <ReporterLayout title="My Articles">
+    <ReporterLayout title="Team News Articles">
       {!showForm ? (
         <>
-          <div className="mb-6">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">All team articles - You can create new and edit any article</p>
+            </div>
             <button
               onClick={() => setShowForm(true)}
               className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded hover:shadow-lg flex items-center space-x-2 transition-all duration-200"
@@ -140,12 +143,12 @@ const ReporterNews = () => {
             <p>Loading...</p>
           ) : articles.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg border border-border">
-              <p className="text-muted-foreground mb-4">You haven't created any articles yet.</p>
+              <p className="text-muted-foreground mb-4">No articles yet. Be the first to create one!</p>
               <button
                 onClick={() => setShowForm(true)}
                 className="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
               >
-                Create Your First Article
+                Create First Article
               </button>
             </div>
           ) : (
@@ -154,6 +157,7 @@ const ReporterNews = () => {
                 <thead className="bg-muted">
                   <tr>
                     <th className="px-6 py-3 text-left text-sm font-semibold">Title</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold">Author</th>
                     <th className="px-6 py-3 text-left text-sm font-semibold">Category</th>
                     <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
                     <th className="px-6 py-3 text-left text-sm font-semibold">Actions</th>
@@ -172,6 +176,7 @@ const ReporterNews = () => {
                           </div>
                         )}
                       </td>
+                      <td className="px-6 py-4 text-sm">{article.author}</td>
                       <td className="px-6 py-4 text-sm">{article.category}</td>
                       <td className="px-6 py-4">
                         <span className={`text-xs px-2 py-1 rounded font-medium ${
@@ -184,17 +189,13 @@ const ReporterNews = () => {
                         <div className="flex items-center space-x-2">
                           {article.status === 'published' && (
                             <a href={`/news/${article.id}`} target="_blank" rel="noopener noreferrer"
-                              className="p-2 text-secondary hover:bg-secondary/10 rounded">
+                              className="p-2 text-secondary hover:bg-secondary/10 rounded" title="View">
                               <Eye size={18} />
                             </a>
                           )}
                           <button onClick={() => handleEdit(article)}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded">
+                            className="p-2 text-blue-600 hover:bg-blue-50 rounded" title="Edit">
                             <Edit size={18} />
-                          </button>
-                          <button onClick={() => handleDelete(article.id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded">
-                            <Trash2 size={18} />
                           </button>
                         </div>
                       </td>

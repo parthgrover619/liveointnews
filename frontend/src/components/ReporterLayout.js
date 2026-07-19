@@ -14,7 +14,7 @@ const ReporterLayout = ({ children, title }) => {
 
   const navItems = [
     { icon: Home, label: 'Dashboard', path: '/reporter/dashboard', testId: 'nav-dashboard' },
-    { icon: Newspaper, label: 'My Articles', path: '/reporter/news', testId: 'nav-news' },
+    { icon: Newspaper, label: 'News Articles', path: '/reporter/news', testId: 'nav-news' },
     { icon: User, label: 'My Profile', path: '/reporter/profile', testId: 'nav-profile' },
   ];
 

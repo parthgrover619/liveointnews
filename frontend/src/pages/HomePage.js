@@ -378,7 +378,7 @@ const HomePage = () => {
             <div className="h-1 w-20 bg-gradient-to-r from-secondary via-primary to-secondary mx-auto mb-3"></div>
             <span className="text-secondary uppercase tracking-[0.3em] text-xs font-black">On The Ground</span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black playfair mt-2">
-              Our <span className="gradient-text">Junior Reporters</span>
+              Our <span className="gradient-text">Reporters</span>
             </h2>
           </div>
 

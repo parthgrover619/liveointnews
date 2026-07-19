@@ -346,6 +346,50 @@ async def delete_reporter(reporter_id: str, user=Depends(verify_token)):
         raise HTTPException(status_code=404, detail="Reporter not found")
     return {"message": "Reporter deleted successfully"}
 
+class PasswordResetRequest(BaseModel):
+    new_password: str
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+@api_router.put("/admin/reporters/{reporter_id}/password")
+async def reset_reporter_password(reporter_id: str, request: PasswordResetRequest, user=Depends(verify_token)):
+    """Admin resets a reporter's password"""
+    reporter = await db.reporters.find_one({"id": reporter_id}, {"_id": 0})
+    if not reporter:
+        raise HTTPException(status_code=404, detail="Reporter not found")
+    
+    if len(request.new_password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+    
+    hashed = bcrypt.hashpw(request.new_password.encode('utf-8'), bcrypt.gensalt())
+    await db.reporters.update_one(
+        {"id": reporter_id},
+        {"$set": {"password_hash": hashed.decode('utf-8'), "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    return {"message": f"Password reset successfully for {reporter['name']}"}
+
+@api_router.put("/admin/change-password")
+async def change_admin_password(request: ChangePasswordRequest, user=Depends(verify_token)):
+    """Admin changes their own password"""
+    admin = await db.admins.find_one({"id": user["id"]}, {"_id": 0})
+    if not admin:
+        raise HTTPException(status_code=404, detail="Admin not found")
+    
+    if not bcrypt.checkpw(request.current_password.encode('utf-8'), admin['password_hash'].encode('utf-8')):
+        raise HTTPException(status_code=401, detail="Current password is incorrect")
+    
+    if len(request.new_password) < 6:
+        raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
+    
+    hashed = bcrypt.hashpw(request.new_password.encode('utf-8'), bcrypt.gensalt())
+    await db.admins.update_one(
+        {"id": user["id"]},
+        {"$set": {"password_hash": hashed.decode('utf-8')}}
+    )
+    return {"message": "Password changed successfully"}
+
 # Reporter self-service routes (only for the logged-in reporter)
 @api_router.get("/reporter/profile", response_model=Reporter)
 async def get_reporter_profile(user=Depends(verify_token)):

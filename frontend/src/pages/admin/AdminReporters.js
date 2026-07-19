@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AdminLayout from '@/components/AdminLayout';
-import { Plus, Trash2, X, User, Mail, Phone, MapPin, Shield } from 'lucide-react';
+import { Plus, Trash2, X, User, Mail, Phone, MapPin, Shield, Key } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -15,6 +15,8 @@ const AdminReporters = () => {
     name: '', email: '', password: '', phone: '',
     district: '', id_number: '', address: '', photo: '', role: 'reporter'
   });
+  const [resetPasswordFor, setResetPasswordFor] = useState(null);
+  const [newPassword, setNewPassword] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,6 +67,27 @@ const AdminReporters = () => {
       fetchReporters();
     } catch (error) {
       alert('Failed to delete');
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    if (newPassword.length < 6) {
+      alert('Password must be at least 6 characters');
+      return;
+    }
+    try {
+      const token = localStorage.getItem('adminToken');
+      await axios.put(
+        `${API}/admin/reporters/${resetPasswordFor.id}/password`,
+        { new_password: newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert(`Password reset successfully for ${resetPasswordFor.name}!\n\nNew password: ${newPassword}\n\nShare this with the reporter.`);
+      setResetPasswordFor(null);
+      setNewPassword('');
+    } catch (error) {
+      alert('Failed to reset password: ' + (error.response?.data?.detail || 'Unknown error'));
     }
   };
 
@@ -141,9 +164,13 @@ const AdminReporters = () => {
                     )}
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-border flex justify-end">
+                  <div className="mt-4 pt-4 border-t border-border flex justify-end space-x-2">
+                    <button onClick={() => setResetPasswordFor(reporter)}
+                      className="p-2 text-yellow-600 hover:bg-yellow-50 rounded transition-colors" title="Reset Password">
+                      <Key size={18} />
+                    </button>
                     <button onClick={() => handleDelete(reporter.id)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors">
+                      className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors" title="Delete">
                       <Trash2 size={18} />
                     </button>
                   </div>
@@ -244,6 +271,61 @@ const AdminReporters = () => {
               </ul>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* Reset Password Modal */}
+      {resetPasswordFor && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold playfair flex items-center space-x-2">
+                <Key size={22} className="text-primary" />
+                <span>Reset Password</span>
+              </h3>
+              <button onClick={() => { setResetPasswordFor(null); setNewPassword(''); }}
+                className="p-2 hover:bg-muted rounded">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="mb-4 p-4 bg-muted rounded">
+              <p className="text-sm">
+                Reset password for <strong>{resetPasswordFor.name}</strong>
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">{resetPasswordFor.email}</p>
+            </div>
+
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">New Password *</label>
+                <input
+                  type="text"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  placeholder="Enter new password (min 6 chars)"
+                  className="w-full px-4 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                  autoFocus
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Share this new password with the reporter after reset.
+                </p>
+              </div>
+
+              <div className="flex space-x-2">
+                <button type="submit"
+                  className="flex-1 px-4 py-2 bg-primary text-white font-semibold rounded hover:bg-primary/90 transition-colors">
+                  Reset Password
+                </button>
+                <button type="button" onClick={() => { setResetPasswordFor(null); setNewPassword(''); }}
+                  className="px-4 py-2 bg-white border border-border font-semibold rounded hover:bg-muted transition-colors">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </AdminLayout>

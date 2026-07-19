@@ -88,47 +88,83 @@ const HomePage = () => {
       <div className="logo-watermark"></div>
       <Header />
 
-      {/* Premium Hero Section with Royal Blue */}
-      <section className="relative overflow-hidden royal-blue-gradient py-20">
-        <div className="absolute inset-0 world-map-bg"></div>
-        <div className="absolute top-10 right-10 compass-decoration"></div>
-        <div className="absolute bottom-10 left-10 compass-decoration" style={{ animationDirection: 'reverse' }}></div>
-        
-        <div className="wave-pattern">
-          <div className="wave"></div>
-          <div className="wave-2"></div>
+      {/* Brand Banner - TV News Style */}
+      <section
+        className="relative overflow-hidden royal-blue-gradient py-10 sm:py-14 border-b-4 border-primary"
+        data-testid="brand-banner"
+      >
+        {/* Background layers */}
+        <div className="absolute inset-0 world-map-bg opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40"></div>
+
+        {/* Diagonal red accent stripe */}
+        <div className="absolute -top-10 -right-20 w-96 h-96 bg-primary/20 blur-3xl rounded-full"></div>
+        <div className="absolute -bottom-10 -left-20 w-96 h-96 bg-secondary/20 blur-3xl rounded-full"></div>
+
+        {/* Animated shine sweep */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="banner-shine"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-12 animate-fadeInUp">
-            <div className="inline-block mb-6">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_himachal-breaking/artifacts/vxbtuj6d_1784024059432.png" 
-                alt="Live Point News"
-                className="w-32 h-32 object-contain drop-shadow-2xl animate-float"
-              />
+          <div className="flex flex-col md:flex-row items-center justify-center md:justify-between gap-6 md:gap-10 animate-fadeInUp">
+            {/* LEFT: Logo + Brand Wordmark */}
+            <div className="flex items-center gap-5 sm:gap-6">
+              <div className="relative shrink-0">
+                <div className="absolute inset-0 bg-primary/40 blur-2xl rounded-full animate-pulse-glow"></div>
+                <img
+                  src="https://customer-assets.emergentagent.com/job_himachal-breaking/artifacts/vxbtuj6d_1784024059432.png"
+                  alt="Live Point News"
+                  className="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 object-contain drop-shadow-2xl"
+                />
+              </div>
+              <div className="text-left">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="inline-flex items-center gap-1.5 bg-primary text-white text-[10px] sm:text-xs font-black uppercase tracking-widest px-2.5 py-1 rounded-sm shadow-lg">
+                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                    Live
+                  </span>
+                  <span className="text-white/70 text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em]">
+                    Himachal Pradesh
+                  </span>
+                </div>
+                <h1
+                  className="text-3xl sm:text-5xl lg:text-6xl font-black playfair leading-none text-white text-shadow-premium tracking-tight"
+                  data-testid="hero-title"
+                >
+                  LIVE POINT <span className="text-primary">NEWS</span>
+                </h1>
+                <div className="flex items-center gap-3 mt-2">
+                  <div className="h-0.5 w-8 bg-primary"></div>
+                  <p className="text-white/90 font-semibold text-sm sm:text-base tracking-wide">
+                    Breaking News, First &amp; Fast
+                  </p>
+                </div>
+              </div>
             </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black playfair tracking-tight leading-none mb-6 text-white text-shadow-premium" data-testid="hero-title">
-              Hyperlocal Himachal Coverage
-            </h1>
-            <div className="flex items-center justify-center space-x-4 mb-8">
-              <div className="h-1 w-24 bg-gradient-to-r from-primary via-white to-primary"></div>
-              <p className="text-xl sm:text-2xl text-white font-bold tracking-wide">Breaking News, First & Fast</p>
-              <div className="h-1 w-24 bg-gradient-to-r from-primary via-white to-primary"></div>
+
+            {/* RIGHT: Trust badges */}
+            <div className="hidden md:flex flex-col gap-2 border-l-2 border-white/20 pl-6">
+              {[
+                { label: 'Verified' },
+                { label: 'Unbiased' },
+                { label: 'Real-Time' },
+              ].map((b) => (
+                <div key={b.label} className="flex items-center gap-2 text-white">
+                  <CheckCircle size={18} className="text-primary" />
+                  <span className="font-bold text-sm tracking-wide">{b.label}</span>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center justify-center space-x-8 text-white/80">
-              <div className="flex items-center space-x-2">
-                <CheckCircle size={20} className="text-primary" />
-                <span className="font-bold">Verified</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle size={20} className="text-primary" />
-                <span className="font-bold">Unbiased</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle size={20} className="text-primary" />
-                <span className="font-bold">Real-Time</span>
-              </div>
+
+            {/* Mobile trust badges */}
+            <div className="flex md:hidden items-center justify-center gap-4 text-white/90">
+              {['Verified', 'Unbiased', 'Real-Time'].map((label) => (
+                <div key={label} className="flex items-center gap-1.5">
+                  <CheckCircle size={14} className="text-primary" />
+                  <span className="font-bold text-xs">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -136,7 +172,7 @@ const HomePage = () => {
 
       {/* Featured News Section */}
       {featuredNews.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative -mt-20 z-20">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-20">
           <NewsCard article={featuredNews[0]} featured={true} />
         </section>
       )}

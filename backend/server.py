@@ -346,6 +346,30 @@ async def delete_reporter(reporter_id: str, user=Depends(verify_token)):
         raise HTTPException(status_code=404, detail="Reporter not found")
     return {"message": "Reporter deleted successfully"}
 
+class ReporterUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    district: Optional[str] = None
+    id_number: Optional[str] = None
+    address: Optional[str] = None
+    photo: Optional[str] = None
+    role: Optional[str] = None
+
+@api_router.put("/admin/reporters/{reporter_id}")
+async def update_reporter(reporter_id: str, request: ReporterUpdateRequest, user=Depends(verify_token)):
+    """Admin updates a reporter's profile fields (name, photo, phone, etc.)"""
+    reporter = await db.reporters.find_one({"id": reporter_id}, {"_id": 0})
+    if not reporter:
+        raise HTTPException(status_code=404, detail="Reporter not found")
+
+    updates = {k: v for k, v in request.dict().items() if v is not None}
+    if not updates:
+        raise HTTPException(status_code=400, detail="No fields provided to update")
+
+    updates["updated_at"] = datetime.now(timezone.utc).isoformat()
+    await db.reporters.update_one({"id": reporter_id}, {"$set": updates})
+    return {"message": f"Reporter '{reporter['name']}' updated successfully"}
+
 class PasswordResetRequest(BaseModel):
     new_password: str
 

@@ -132,30 +132,21 @@ const HomePage = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-center md:justify-between gap-6 md:gap-10 animate-fadeInUp">
-            <div className="flex items-center gap-5 sm:gap-6">
-              <div className="relative shrink-0">
-                <div className="absolute inset-0 bg-primary/40 blur-2xl rounded-full animate-pulse-glow"></div>
-                <img
-                  src="https://customer-assets.emergentagent.com/job_himachal-breaking/artifacts/vxbtuj6d_1784024059432.png"
-                  alt="Live Point News"
-                  className="relative w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-2xl"
-                />
+            <div className="text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                <span className="inline-flex items-center gap-1.5 bg-primary text-white text-[10px] sm:text-xs font-black uppercase tracking-widest px-2.5 py-1 rounded-sm shadow-lg">
+                  <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                  Live
+                </span>
+                <span className="text-white/70 text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em]">Himachal Pradesh</span>
               </div>
-              <div className="text-left">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="inline-flex items-center gap-1.5 bg-primary text-white text-[10px] sm:text-xs font-black uppercase tracking-widest px-2.5 py-1 rounded-sm shadow-lg">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
-                    Live
-                  </span>
-                  <span className="text-white/70 text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em]">Himachal Pradesh</span>
-                </div>
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black playfair leading-none text-white text-shadow-premium tracking-tight" data-testid="hero-title">
-                  LIVE POINT <span className="text-primary">NEWS</span>
-                </h1>
-                <div className="flex items-center gap-3 mt-2">
-                  <div className="h-0.5 w-8 bg-primary"></div>
-                  <p className="text-white/90 font-semibold text-sm sm:text-base tracking-wide">Breaking News, First &amp; Fast</p>
-                </div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black playfair leading-none text-white text-shadow-premium tracking-tight" data-testid="hero-title">
+                LIVE POINT <span className="text-primary">NEWS</span>
+              </h1>
+              <div className="flex items-center justify-center md:justify-start gap-3 mt-3">
+                <div className="h-0.5 w-8 bg-primary"></div>
+                <p className="text-white/90 font-semibold text-sm sm:text-base tracking-wide">Breaking News, First &amp; Fast</p>
+                <div className="h-0.5 w-8 bg-primary hidden sm:block"></div>
               </div>
             </div>
 

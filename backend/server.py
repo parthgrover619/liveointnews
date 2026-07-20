@@ -749,6 +749,70 @@ async def get_contacts(user=Depends(verify_token)):
 
 app.include_router(api_router)
 
+# Public sitemap.xml (served at /api/sitemap.xml — dynamic)
+from fastapi.responses import Response
+
+SITE_BASE_URL = os.environ.get('SITE_BASE_URL', 'https://livepointnews.com').rstrip('/')
+
+@app.get("/api/sitemap.xml", include_in_schema=False)
+async def sitemap_xml():
+    static_paths = [
+        ("/", "1.0", "daily"),
+        ("/news", "0.9", "hourly"),
+        ("/about", "0.6", "monthly"),
+        ("/contact", "0.6", "monthly"),
+        ("/testimonials", "0.5", "monthly"),
+        ("/advertise", "0.6", "monthly"),
+        ("/privacy", "0.3", "yearly"),
+        ("/terms", "0.3", "yearly"),
+    ]
+
+    urls = []
+    now_iso = datetime.now(timezone.utc).date().isoformat()
+    for path, prio, chg in static_paths:
+        urls.append(
+            f"  <url>\n    <loc>{SITE_BASE_URL}{path}</loc>\n"
+            f"    <lastmod>{now_iso}</lastmod>\n"
+            f"    <changefreq>{chg}</changefreq>\n"
+            f"    <priority>{prio}</priority>\n  </url>"
+        )
+
+    # Dynamic: published news articles
+    articles = await db.news_articles.find(
+        {"status": "published"}, {"_id": 0, "id": 1, "updated_at": 1}
+    ).sort("updated_at", -1).limit(5000).to_list(5000)
+    for a in articles:
+        last = a.get("updated_at", "")
+        try:
+            last_date = datetime.fromisoformat(last).date().isoformat() if isinstance(last, str) else now_iso
+        except Exception:
+            last_date = now_iso
+        urls.append(
+            f"  <url>\n    <loc>{SITE_BASE_URL}/news/{a['id']}</loc>\n"
+            f"    <lastmod>{last_date}</lastmod>\n"
+            f"    <changefreq>weekly</changefreq>\n"
+            f"    <priority>0.8</priority>\n  </url>"
+        )
+
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls)
+        + "\n</urlset>\n"
+    )
+    return Response(content=xml, media_type="application/xml")
+
+@app.get("/api/robots.txt", include_in_schema=False)
+async def robots_txt():
+    body = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin\n"
+        "Disallow: /reporter\n"
+        f"\nSitemap: {SITE_BASE_URL}/api/sitemap.xml\n"
+    )
+    return Response(content=body, media_type="text/plain")
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,

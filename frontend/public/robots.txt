@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /reporter
+
+Sitemap: https://livepointnews.com/api/sitemap.xml

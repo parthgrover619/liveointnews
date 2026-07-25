@@ -236,41 +236,32 @@ async def seed_categories():
             await db.categories.insert_one(cat)
     logger.info("Categories seeded")
 
-# Seed default reporters (idempotent)
+# Seed default reporters (idempotent) — ONE shared account for all reporters
 async def seed_reporters():
-    default_reporters = [
-        {"name": "Sunil Grover",     "email": "sunilgrover@livepointnews.com",     "id_number": "LPN-SR-001", "role": "reporter"},
-        {"name": "Anil Kanwar",      "email": "anilkanwar@livepointnews.com",      "id_number": "LPN-SR-002", "role": "reporter"},
-        {"name": "Saurabh Chauhan",  "email": "saurabhchauhan@livepointnews.com",  "id_number": "LPN-SR-003", "role": "reporter"},
-        {"name": "Priety",           "email": "priety@livepointnews.com",          "id_number": "LPN-R-001",  "role": "reporter"},
-        {"name": "Kapil Thakur",     "email": "kapilthakur@livepointnews.com",     "id_number": "LPN-R-002",  "role": "reporter"},
-        {"name": "Sunil Sharma",     "email": "sunilsharma@livepointnews.com",     "id_number": "LPN-R-003",  "role": "reporter"},
-        {"name": "Rakesh Verma",     "email": "rakeshverma@livepointnews.com",     "id_number": "LPN-R-004",  "role": "reporter"},
-    ]
+    shared_email = "reporter@livepointnews.com"
+    exists = await db.reporters.find_one({"email": shared_email}, {"_id": 0})
+    if exists:
+        logger.info("Shared reporter account already exists")
+        return
     password = "Reporter@2026"
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     now = datetime.now(timezone.utc).isoformat()
-    created = 0
-    for r in default_reporters:
-        exists = await db.reporters.find_one({"email": r["email"]}, {"_id": 0})
-        if not exists:
-            await db.reporters.insert_one({
-                "id": str(uuid.uuid4()),
-                "name": r["name"],
-                "email": r["email"],
-                "password_hash": hashed,
-                "phone": "+91-0000000000",
-                "district": "Himachal Pradesh",
-                "id_number": r["id_number"],
-                "address": "Theog, Shimla, HP",
-                "photo": "",
-                "role": r["role"],
-                "status": "active",
-                "created_at": now,
-                "updated_at": now,
-            })
-            created += 1
-    logger.info(f"Default reporters seeded ({created} new)")
+    await db.reporters.insert_one({
+        "id": str(uuid.uuid4()),
+        "name": "Live Point Reporter",
+        "email": shared_email,
+        "password_hash": hashed,
+        "phone": "+91-0000000000",
+        "district": "Himachal Pradesh",
+        "id_number": "LPN-TEAM-001",
+        "address": "Theog, Shimla, HP",
+        "photo": "",
+        "role": "reporter",
+        "status": "active",
+        "created_at": now,
+        "updated_at": now,
+    })
+    logger.info("Shared reporter account seeded")
 
 @app.on_event("startup")
 async def startup_event():
